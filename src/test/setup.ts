@@ -1,14 +1,31 @@
 import { PrismaClient } from '@prisma/client';
-import { mockDeep, mockReset } from 'jest-mock-extended';
+import { mockDeep, DeepMockProxy } from 'jest-mock-extended';
 
-jest.mock('@prisma/client', () => ({
-  PrismaClient: jest.fn(),
-}));
+export type MockContext = {
+  prisma: DeepMockProxy<PrismaClient>;
+};
 
-const prismaMock = mockDeep<PrismaClient>();
+export type Context = {
+  prisma: PrismaClient;
+};
 
-beforeEach(() => {
-  mockReset(prismaMock);
-});
+export const createMockContext = (): MockContext => {
+  return {
+    prisma: mockDeep<PrismaClient>(),
+  };
+};
 
-export { prismaMock }; 
+export const createMockContextWithData = (data: any): MockContext => {
+  const context = createMockContext();
+  
+  // Mock data'yı ayarla
+  Object.keys(data).forEach((key) => {
+    if (context.prisma[key]) {
+      context.prisma[key].findUnique.mockResolvedValue(data[key]);
+      context.prisma[key].findFirst.mockResolvedValue(data[key]);
+      context.prisma[key].findMany.mockResolvedValue([data[key]]);
+    }
+  });
+
+  return context;
+}; 
