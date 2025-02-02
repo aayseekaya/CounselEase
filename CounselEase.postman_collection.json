@@ -1,0 +1,286 @@
+{
+  "info": {
+    "name": "CounselEase API",
+    "description": "CounselEase Dijital Danışmanlık Sistemi API Dokümantasyonu",
+    "version": "1.0.0"
+  },
+  "item": [
+    {
+      "name": "Auth Service",
+      "item": [
+        {
+          "name": "Kayıt Ol",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/auth/register",
+            "body": {
+              "mode": "raw",
+              "raw": {
+                "email": "user@example.com",
+                "password": "password123",
+                "fullName": "Test User",
+                "userType": "CLIENT"
+              }
+            },
+            "description": "Yeni kullanıcı kaydı oluşturur"
+          }
+        },
+        {
+          "name": "Giriş Yap",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/auth/login",
+            "body": {
+              "mode": "raw",
+              "raw": {
+                "email": "user@example.com",
+                "password": "password123"
+              }
+            },
+            "description": "Kullanıcı girişi yapar ve JWT token döner"
+          }
+        },
+        {
+          "name": "Kullanıcı Bilgileri",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": "{{baseUrl}}/auth/me",
+            "description": "Giriş yapmış kullanıcının bilgilerini getirir"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Subscription Service",
+      "item": [
+        {
+          "name": "Abonelik Planları",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/subscription/plans",
+            "description": "Mevcut abonelik planlarını listeler"
+          }
+        },
+        {
+          "name": "Plan Oluştur",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/subscription/plans",
+            "body": {
+              "mode": "raw",
+              "raw": {
+                "name": "Premium Plan",
+                "description": "Aylık premium üyelik",
+                "price": 199.99,
+                "duration": 30,
+                "features": ["7/24 Destek", "Sınırsız Görüşme"]
+              }
+            },
+            "description": "Yeni abonelik planı oluşturur (Admin)"
+          }
+        },
+        {
+          "name": "Abone Ol",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/subscription/subscribe",
+            "body": {
+              "mode": "raw",
+              "raw": {
+                "planId": "plan_id",
+                "userId": "user_id"
+              }
+            },
+            "description": "Seçilen plana abone olur"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Payment Service",
+      "item": [
+        {
+          "name": "Ödeme Oluştur",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/payment/create",
+            "body": {
+              "mode": "raw",
+              "raw": {
+                "userId": "user_id",
+                "subscriptionId": "subscription_id",
+                "amount": 199.99,
+                "currency": "TRY",
+                "paymentMethod": "CREDIT_CARD"
+              }
+            },
+            "description": "Yeni ödeme işlemi başlatır"
+          }
+        },
+        {
+          "name": "Ödeme Geçmişi",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": "{{baseUrl}}/payment/history/{{userId}}",
+            "description": "Kullanıcının ödeme geçmişini getirir"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Appointment Service",
+      "item": [
+        {
+          "name": "Randevu Oluştur",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/appointment/create",
+            "body": {
+              "mode": "raw",
+              "raw": {
+                "clientId": "client_id",
+                "expertId": "expert_id",
+                "startTime": "2024-02-20T10:00:00Z",
+                "endTime": "2024-02-20T11:00:00Z",
+                "type": "ONLINE"
+              }
+            },
+            "description": "Yeni randevu oluşturur"
+          }
+        },
+        {
+          "name": "Uzman Randevuları",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": "{{baseUrl}}/appointment/expert/{{expertId}}",
+            "description": "Uzmanın randevularını listeler"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Notification Service",
+      "item": [
+        {
+          "name": "Bildirim Gönder",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{baseUrl}}/notification/send",
+            "body": {
+              "mode": "raw",
+              "raw": {
+                "userId": "user_id",
+                "type": "APPOINTMENT_REMINDER",
+                "channel": "EMAIL",
+                "title": "Randevu Hatırlatması",
+                "content": "Yarın saat 10:00'da randevunuz var"
+              }
+            },
+            "description": "Bildirim gönderir"
+          }
+        },
+        {
+          "name": "Bildirim Geçmişi",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": "{{baseUrl}}/notification/history/{{userId}}",
+            "description": "Kullanıcının bildirim geçmişini getirir"
+          }
+        }
+      ]
+    }
+  ],
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:3000",
+      "type": "string"
+    }
+  ]
+} 

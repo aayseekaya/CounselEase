@@ -1,0 +1,37 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: counselease-api
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: counselease-api
+  template:
+    metadata:
+      labels:
+        app: counselease-api
+    spec:
+      containers:
+      - name: api
+        image: counselease-api:latest
+        ports:
+        - containerPort: 3000
+        env:
+        - name: DATABASE_URL
+          valueFrom:
+            secretKeyRef:
+              name: counselease-secrets
+              key: database-url
+        - name: JWT_SECRET
+          valueFrom:
+            secretKeyRef:
+              name: counselease-secrets
+              key: jwt-secret
+        resources:
+          limits:
+            cpu: "1"
+            memory: "1Gi"
+          requests:
+            cpu: "500m"
+            memory: "512Mi" 

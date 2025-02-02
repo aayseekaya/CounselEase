@@ -1,0 +1,39 @@
+# Node.js
+node_modules/
+npm-debug.log
+yarn-error.log
+
+# TypeScript
+dist/
+out/
+build/
+*.tsbuildinfo
+
+# .env dosyaları
+.env
+.env.local
+.env.*.local
+
+# Prettier
+.prettierignore
+
+# IDEs
+.idea/
+.vscode/
+
+# Operating System files
+.DS_Store
+Thumbs.db
+
+# Logs
+logs/
+*.log
+
+# Optional npm cache
+.npm/
+
+# Yarn
+.yarn-integrity
+
+# TypeScript output
+*.tsbuildinfo

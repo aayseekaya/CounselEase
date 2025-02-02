@@ -1,0 +1,66 @@
+{
+  "dashboard": {
+    "title": "CounselEase Monitoring",
+    "panels": [
+      {
+        "title": "HTTP İstekleri",
+        "type": "graph",
+        "datasource": "Prometheus",
+        "targets": [
+          {
+            "expr": "rate(counselease_http_requests_total[5m])",
+            "legendFormat": "{{method}} {{path}}"
+          }
+        ]
+      },
+      {
+        "title": "İstek Süreleri",
+        "type": "heatmap",
+        "datasource": "Prometheus",
+        "targets": [
+          {
+            "expr": "rate(counselease_http_request_duration_seconds_bucket[5m])",
+            "legendFormat": "{{le}}"
+          }
+        ]
+      },
+      {
+        "title": "Hata Oranı",
+        "type": "graph",
+        "datasource": "Prometheus",
+        "targets": [
+          {
+            "expr": "rate(counselease_errors_total[5m])",
+            "legendFormat": "{{type}}"
+          }
+        ]
+      },
+      {
+        "title": "Sistem Kaynakları",
+        "type": "row",
+        "panels": [
+          {
+            "title": "CPU Kullanımı",
+            "type": "gauge",
+            "datasource": "Prometheus",
+            "targets": [
+              {
+                "expr": "counselease_cpu_usage_percentage"
+              }
+            ]
+          },
+          {
+            "title": "Bellek Kullanımı",
+            "type": "gauge",
+            "datasource": "Prometheus",
+            "targets": [
+              {
+                "expr": "counselease_memory_usage_bytes"
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+} 
