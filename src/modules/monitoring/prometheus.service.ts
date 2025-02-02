@@ -90,4 +90,7 @@ export class PrometheusService {
   async getMetrics() {
     return this.registry.metrics();
   }
+  async getContentType() {
+    return this.registry.contentType;
+  }
 } 

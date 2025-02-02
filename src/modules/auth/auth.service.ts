@@ -61,7 +61,6 @@ export class AuthService {
       email: user.email,
       userType: user.userType,
     };
-
     return {
       token: this.jwtService.sign(payload),
       user: {

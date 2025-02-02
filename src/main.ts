@@ -14,7 +14,7 @@ async function bootstrap() {
 
   // Middleware'ler
   app.use(compression());
-  app.use(helmet());
+  app.use(helmet);
   
   // Validation pipe
   app.useGlobalPipes(new ValidationPipe());
@@ -32,7 +32,7 @@ async function bootstrap() {
 
   // Prometheus metrikleri
   const prometheusService = app.get(PrometheusService);
-  app.use('/metrics', async (req, res) => {
+  app.use('/metrics', async (req:any, res:any) => {
     res.set('Content-Type', prometheusService.getContentType());
     res.end(await prometheusService.getMetrics());
   });
