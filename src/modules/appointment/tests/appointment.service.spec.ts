@@ -47,14 +47,22 @@ describe('AppointmentService', () => {
         startTime: '09:00',
         endTime: '17:00',
         isAvailable: true,
+        createdAt: new Date(),
+        updatedAt: new Date(),
       });
 
       // Mock randevu oluşturma
       mockContext.prisma.appointment.create.mockResolvedValue({
-        id: '1',
-        ...createAppointmentDto,
+        id: '2',
+        clientId: '1',
+        expertId: '2',
+        startTime: new Date(), // Date formatında
+        endTime: new Date(),   // Date formatında
+        type: 'ONLINE' as AppointmentType,
         status: 'PENDING' as AppointmentStatus,
-        meetingLink: expect.any(String),
+        notes: 'Test randevu',
+        meetingLink: 'meeting_link',
+        cancelReason: null,
         createdAt: new Date(),
         updatedAt: new Date(),
       });
@@ -97,8 +105,17 @@ describe('AppointmentService', () => {
 
       mockContext.prisma.appointment.update.mockResolvedValue({
         id: '1',
+        clientId: '1',
+        expertId: '2',
+        startTime: new Date(),
+        endTime: new Date(),
+        type: 'ONLINE' as AppointmentType,
         status: updateDto.status,
+        notes: null,
+        meetingLink: null,
         cancelReason: updateDto.cancelReason,
+        createdAt: new Date(),
+        updatedAt: new Date(),
       });
 
       const result = await service.updateAppointmentStatus('1', updateDto);
@@ -112,8 +129,8 @@ describe('AppointmentService', () => {
   describe('getExpertAppointments', () => {
     it('should return expert appointments', async () => {
       const mockAppointments = [
-        { id: '1', expertId: '2', startTime: new Date() },
-        { id: '2', expertId: '2', startTime: new Date() },
+        { id: '1', clientId: '1', expertId: '2', startTime: new Date(), endTime: new Date() }, // Date formatında
+        { id: '2', clientId: '1', expertId: '2', startTime: new Date(), endTime: new Date() }, // Date formatında
       ];
 
       mockContext.prisma.appointment.findMany.mockResolvedValue(mockAppointments);
@@ -128,8 +145,8 @@ describe('AppointmentService', () => {
   describe('getClientAppointments', () => {
     it('should return client appointments', async () => {
       const mockAppointments = [
-        { id: '1', clientId: '1', startTime: new Date() },
-        { id: '2', clientId: '1', startTime: new Date() },
+        { id: '1', clientId: '1', expertId: '2', startTime: new Date(), endTime: new Date() }, // Date formatında
+        { id: '2', clientId: '1', expertId: '2', startTime: new Date(), endTime: new Date() }, // Date formatında
       ];
 
       mockContext.prisma.appointment.findMany.mockResolvedValue(mockAppointments);
@@ -140,4 +157,4 @@ describe('AppointmentService', () => {
       expect(result[0].clientId).toBe('1');
     });
   });
-}); 
+});

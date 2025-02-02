@@ -43,8 +43,17 @@ describe('AppointmentController', () => {
         message: 'Randevu başarıyla oluşturuldu',
         appointment: {
           id: '1',
-          ...createDto,
-          status: 'PENDING',
+          clientId: '1',
+          expertId: '2',
+          startTime: new Date('2024-03-20T10:00:00Z'),
+          endTime: new Date('2024-03-20T11:00:00Z'),
+          type: 'ONLINE' as AppointmentType,
+          status: 'PENDING' as AppointmentStatus,
+          notes: 'Test randevu',
+          meetingLink: null, // Assuming it's nullable
+          cancelReason: null, // Assuming it's nullable
+          createdAt: new Date(), // Adding missing properties
+          updatedAt: new Date(), // Adding missing properties
         },
       };
 
@@ -57,4 +66,4 @@ describe('AppointmentController', () => {
   });
 
   // Diğer controller metodları için benzer testler...
-}); 
+});
