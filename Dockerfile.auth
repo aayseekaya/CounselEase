@@ -1,5 +1,7 @@
+# Auth servisi için Node.js 18 Alpine imajını kullan
 FROM node:18-alpine
 
+# Çalışma dizinini /app olarak ayarla
 WORKDIR /app
 
 # Package dosyalarını kopyala
@@ -7,7 +9,7 @@ COPY package*.json ./
 COPY prisma ./prisma/
 
 # Bağımlılıkları yükle
-RUN npm install  --legacy-peer-deps
+RUN npm install   --legacy-peer-deps
 
 # TypeScript kaynak kodlarını kopyala
 COPY . .
@@ -18,6 +20,8 @@ RUN npm run build
 # Prisma client'ı oluştur
 RUN npx prisma generate
 
+# Auth servisini 3000 portunda çalıştır
 EXPOSE 3000
 
-CMD ["npm", "start"] 
+# Servisi başlat
+CMD ["npm", "start"]

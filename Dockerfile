@@ -5,9 +5,10 @@ WORKDIR /app
 # Package dosyalarını kopyala
 COPY package*.json ./
 COPY prisma ./prisma/
+COPY .env .env
 
 # Bağımlılıkları yükle
-RUN npm install
+RUN npm install --legacy-peer-deps
 
 # TypeScript kaynak kodlarını kopyala
 COPY . .
