@@ -1,0 +1,11 @@
+global:
+  scrape_interval: 15s  # Prometheus'un veri toplama aralığı
+
+scrape_configs:
+  - job_name: 'prometheus'  # Prometheus için kendi veri toplama görevini oluşturuyoruz
+    static_configs:
+      - targets: ['localhost:9090']  # Prometheus'un kendisinden veri toplama
+
+  - job_name: 'example'  # Diğer bir hedef
+    static_configs:
+      - targets: ['localhost:8080']  # Diğer hedefin adresi

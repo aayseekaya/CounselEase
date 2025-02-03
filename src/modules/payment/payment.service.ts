@@ -44,11 +44,11 @@ export class PaymentService {
     if (event.type === 'payment_intent.succeeded') {
       const paymentIntent = event.data.object;
 
-     /* await this.prisma.payment.update({
+     await this.prisma.payment.update({
         where: { stripePaymentId: paymentIntent.id },
         data: { status: 'COMPLETED' },
       });
-     */
+
       await this.prisma.payment.updateMany({
         where: { stripePaymentId: paymentIntent.id },  // Bu, benzersiz olmayan alanlarla çalışır
         data: { status: 'COMPLETED' },
